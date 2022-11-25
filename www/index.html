@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snake</title>
+    <style>
+      .canvas__wrapper {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: #000;
+        color: aquamarine;
+        border: 2px solid aquamarine;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>My Snake Game</h1>
+    <section class="canvas__wrapper">
+      Here is the center
+      <canvas id="canvas" width="800" height="600"></canvas>
+    </section>
+    <script src="index.js"></script>
+  </body>
+</html>

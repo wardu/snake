@@ -1,9 +1,12 @@
-import init, { World } from "snake";
+import init, { World, Direction } from "snake";
 
 init().then((_) => {
   const CELL_SIZE = 14;
 
-  const world = World.new();
+  const WORLD_WIDTH = 20;
+  const snakeSpawnIdx = Date.now() % (WORLD_WIDTH * WORLD_WIDTH);
+
+  const world = World.new(WORLD_WIDTH, snakeSpawnIdx);
   const worldWidth = world.get_width();
 
   const canvas = <HTMLCanvasElement>document.getElementById("canvas");
@@ -11,6 +14,27 @@ init().then((_) => {
 
   canvas.height = worldWidth * CELL_SIZE;
   canvas.width = worldWidth * CELL_SIZE;
+
+  document.addEventListener("keydown", (event) => {
+    switch (event.key) {
+      case "ArrowUp": {
+        world.snake_direction(Direction.Up);
+        break;
+      }
+      case "ArrowDown": {
+        world.snake_direction(Direction.Down);
+        break;
+      }
+      case "ArrowLeft": {
+        world.snake_direction(Direction.Left);
+        break;
+      }
+      case "ArrowRight": {
+        world.snake_direction(Direction.Right);
+        break;
+      }
+    }
+  });
 
   const drawWorld = () => {
     context.beginPath();
@@ -44,12 +68,13 @@ init().then((_) => {
   };
 
   const update = () => {
+    const FPS = 10;
     setTimeout(() => {
       context.clearRect(0, 0, canvas.width, canvas.height);
       world.update();
       paint();
       requestAnimationFrame(update);
-    }, 100);
+    }, 1000 / FPS);
   };
 
   paint();

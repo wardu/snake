@@ -6,7 +6,7 @@ init().then((_) => {
   const world = World.new();
   const worldWidth = world.get_width();
 
-  const canvas = document.getElementById("canvas");
+  const canvas = <HTMLCanvasElement>document.getElementById("canvas");
   const context = canvas.getContext("2d");
 
   canvas.height = worldWidth * CELL_SIZE;
@@ -38,13 +38,21 @@ init().then((_) => {
     context.stroke();
   };
 
-  drawWorld();
-  drawSnake();
-
-  setInterval(() => {
-    context.clearRect(0, 0, canvas.width, canvas.height);
+  const paint = () => {
     drawWorld();
     drawSnake();
-    world.update();
-  }, 100);
+  };
+
+  const update = () => {
+    setTimeout(() => {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      world.update();
+      paint();
+      requestAnimationFrame(update);
+    }, 100);
+  };
+
+  paint();
+  update();
+  console.log("world", world);
 });

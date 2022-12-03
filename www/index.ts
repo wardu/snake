@@ -1,10 +1,11 @@
 import init, { World, Direction } from "snake";
+import { now } from "./date";
 
-init().then((_) => {
+init().then((wasm) => {
   const CELL_SIZE = 14;
 
   const WORLD_WIDTH = 20;
-  const snakeSpawnIdx = Date.now() % (WORLD_WIDTH * WORLD_WIDTH);
+  const snakeSpawnIdx = now(WORLD_WIDTH * WORLD_WIDTH);
 
   const world = World.new(WORLD_WIDTH, snakeSpawnIdx);
   const worldWidth = world.get_width();
@@ -51,13 +52,34 @@ init().then((_) => {
     context.stroke();
   };
 
-  const drawSnake = () => {
-    const snakeIdx = world.snake_head_idx();
-    const col = snakeIdx % worldWidth;
-    const row = Math.floor(snakeIdx / worldWidth);
+  const drawReward = () => {
+    const idx = world.reward_cell();
+    const col = idx % worldWidth;
+    const row = Math.floor(idx / worldWidth);
 
     context.beginPath();
+    context.fillStyle = "red";
     context.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+
+    context.stroke();
+  };
+
+  const drawSnake = () => {
+    const snakeCells = new Uint32Array(
+      wasm.memory.buffer,
+      world.snake_cells(),
+      world.snake_length()
+    );
+
+    snakeCells.forEach((cellIdx, i) => {
+      const col = cellIdx % worldWidth;
+      const row = Math.floor(cellIdx / worldWidth);
+
+      context.fillStyle = i === 0 ? "green" : "black";
+
+      context.beginPath();
+      context.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+    });
 
     context.stroke();
   };
@@ -65,13 +87,14 @@ init().then((_) => {
   const paint = () => {
     drawWorld();
     drawSnake();
+    drawReward();
   };
 
   const update = () => {
     const FPS = 10;
     setTimeout(() => {
       context.clearRect(0, 0, canvas.width, canvas.height);
-      world.update();
+      world.step();
       paint();
       requestAnimationFrame(update);
     }, 1000 / FPS);

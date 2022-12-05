@@ -20,12 +20,38 @@
         /* color: aquamarine; */
         border: 2px solid aquamarine;
       }
+
+      .game-panel {
+        margin-bottom: 20px;
+      }
+
+      .flex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .label {
+        font-weight: bold;
+        margin-right: 10px;
+      }
+
+      .canvas {
+        border: 2px solid aquamarine;
+      }
     </style>
   </head>
   <body>
     <h1>My Snake Game</h1>
     <section class="canvas__wrapper">
-      Here is the center
+      <div class="game-panel">
+        <div class="flex">
+          <div class="label">Status:</div>
+          <div id="game-status">None</div>
+        </div>
+        <div class="flex">
+          <button id="game-control-btn">Play</button>
+        </div>
+      </div>
       <canvas id="canvas" width="800" height="600"></canvas>
     </section>
     <script src="index.js"></script>

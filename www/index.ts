@@ -1,15 +1,16 @@
-import init, { World, Direction } from "snake";
+import init, { World, Direction, GameStatus } from "snake";
 import { now } from "./date";
 
 init().then((wasm) => {
   const CELL_SIZE = 14;
 
-  const WORLD_WIDTH = 20;
+  const WORLD_WIDTH = 10;
   const snakeSpawnIdx = now(WORLD_WIDTH * WORLD_WIDTH);
 
   const world = World.new(WORLD_WIDTH, snakeSpawnIdx);
   const worldWidth = world.get_width();
 
+  const points = document.getElementById("points");
   const gameStatus = document.getElementById("game-status");
 
   const gameControlButton = document.getElementById("game-control-btn");
@@ -89,21 +90,29 @@ init().then((wasm) => {
       world.snake_length()
     );
 
-    snakeCells.forEach((cellIdx, i) => {
-      const col = cellIdx % worldWidth;
-      const row = Math.floor(cellIdx / worldWidth);
+    snakeCells
+      .filter((cellIdx, i) => !(i > 0 && cellIdx === snakeCells[0]))
+      .forEach((cellIdx, i) => {
+        const col = cellIdx % worldWidth;
+        const row = Math.floor(cellIdx / worldWidth);
 
-      context.fillStyle = i === 0 ? "green" : "black";
+        context.fillStyle = i === 0 ? "green" : "black";
 
-      context.beginPath();
-      context.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-    });
+        context.beginPath();
+        context.fillRect(
+          col * CELL_SIZE,
+          row * CELL_SIZE,
+          CELL_SIZE,
+          CELL_SIZE
+        );
+      });
 
     context.stroke();
   };
 
   const drawGameStatus = () => {
     gameStatus.textContent = world.game_status_text();
+    points.textContent = world.points().toString();
   };
 
   const paint = () => {
@@ -114,7 +123,15 @@ init().then((wasm) => {
   };
 
   const play = () => {
-    const FPS = 5;
+    console.log("object");
+    const status = world.game_status();
+
+    if (status == GameStatus.Won || status == GameStatus.Lost) {
+      gameControlButton.textContent = "Restart";
+      return;
+    }
+
+    const FPS = 3;
     setTimeout(() => {
       context.clearRect(0, 0, canvas.width, canvas.height);
       world.step();

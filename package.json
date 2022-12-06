@@ -5,7 +5,9 @@
   "main": "server.server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/server.ts"
+    "start": "node server/server.ts",
+    "build": "npm run build --prefix www",
+    "vercel-prebuild": "npm install --prefix www"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,25 @@
+{
+  "name": "snake_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.server.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wardu/snake.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wardu/snake/issues"
+  },
+  "homepage": "https://github.com/wardu/snake#readme",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "express": "^4.18.2"
+  }
+}

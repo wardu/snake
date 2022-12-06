@@ -123,7 +123,6 @@ init().then((wasm) => {
   };
 
   const play = () => {
-    console.log("object");
     const status = world.game_status();
 
     if (status == GameStatus.Won || status == GameStatus.Lost) {

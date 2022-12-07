@@ -1,0 +1,16 @@
+{
+  "name": "snake",
+  "version": "0.1.0",
+  "files": [
+    "snake_bg.wasm",
+    "snake.js",
+    "snake.d.ts"
+  ],
+  "module": "snake.js",
+  "types": "snake.d.ts",
+  "sideEffects": false,
+  "dependencies": {
+    "compression": "^1.7.4",
+    "express": "^4.18.2"
+  }
+}
